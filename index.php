@@ -4,13 +4,10 @@ include "db_conn.php";
 // to display recoed in a single page.
 $recordsPerPage = 5;
 //total pages to show.
-$totalPagesQuery = "SELECT COUNT(id) FROM `test`";
-$totalResult = mysqli_query($conn, $totalPagesQuery);
-$count = mysqli_fetch_row($totalResult);
-$totalpages = ceil($count[0] / $recordsPerPage);
+include "totalpages.php";
 // get current page.
 if (isset($_GET['page'])) {
-    // $currentPage = $_GET['page'];
+    $currentPage = $_GET['page'];
 } else {
     $currentPage = 2;
 }
@@ -43,6 +40,25 @@ $result = mysqli_query($conn, $sql);
 
 <body>
     <style>
+        .pagination .page-item .page-link {
+            background-color: #00ff5573;
+            /* Set the background color for pagination links */
+            color: #fff;
+            /* Set the text color for pagination links */
+        }
+
+        .pagination .page-item .page-link:hover {
+            background-color: #00ff5573;
+            /* Set the background color on hover */
+            color: #000;
+            /* Set the text color on hover */
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #A542D6;
+            color: #fff;
+        }
+
         .navbar {
             background-color: #00ff5573;
             border-radius: 8px;
@@ -107,13 +123,15 @@ $result = mysqli_query($conn, $sql);
                 </tbody>
             </table>
             <!-- pagination -->
-
             <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                <?php
+                for ($i = 1; $i <= $totalpages; $i++) {
+                    $activeClass = ($i == $currentPage) ? 'active' : '.disabled';
+                ?>
+                    <li class="page-item <?php echo $activeClass; ?>"><a class="page-link" href="index.php?page=<?php echo $i; ?>"><?php echo $i ?></a></li>
+                <?php
+                }
+                ?>
             </ul>
         </div>
     </form>
