@@ -3,7 +3,11 @@ include "db_conn.php";
 
 // to display recoed in a single page.
 $recordsPerPage = 5;
-
+//total pages to show.
+$totalPagesQuery = "SELECT COUNT(id) FROM `test`";
+$totalResult = mysqli_query($conn,$totalPagesQuery);
+$count= mysqli_fetch_row($totalResult);
+$totalpages=ceil($count[0] / $recordsPerPage);
 // get current page.
 if (isset($_GET['page'])) {
     // $currentPage = $_GET['page'];
@@ -102,6 +106,15 @@ $result = mysqli_query($conn, $sql);
                     ?>
                 </tbody>
             </table>
+            <!-- pagination -->
+            
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
         </div>
     </form>
     <!-- Bootstrap -->
