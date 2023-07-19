@@ -1,5 +1,23 @@
 <?php
 include "db_conn.php";
+
+// to display recoed in a single page.
+$recordsPerPage = 5;
+
+// get current page.
+if (isset($_GET['page'])) {
+    // $currentPage = $_GET['page'];
+} else {
+    $currentPage = 2;
+}
+
+// calculate offset for the query.
+$offset = ($currentPage - 1) * $recordsPerPage;
+
+// query to fetch records with pagination
+$sql = "SELECT * FROM `test` LIMIT $offset, $recordsPerPage";
+$result = mysqli_query($conn, $sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -63,8 +81,8 @@ include "db_conn.php";
                 <tbody>
                     <?php
 
-                    $sql = "SELECT * FROM `test`";
-                    $result = mysqli_query($conn, $sql);
+                    // $sql = "SELECT * FROM `test`";
+                    // $result = mysqli_query($conn, $sql);
                     while ($row = mysqli_fetch_assoc($result)) {
                     ?>
                         <tr>
